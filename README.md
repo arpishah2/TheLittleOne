@@ -23,6 +23,8 @@ Requirements:
 
 Installation:
 
+# Clone the repository
+  git clone https://github.com/arpishah2/TheLittleOne.git
 API Reference:
 
 Test:
@@ -33,5 +35,3 @@ https://github.com/arpishah2
 https://www.linkedin.com/in/arpishah2
 
 
-# Clone the repository
-  git clone https://github.com/arpishah2/TheLittleOne.git
