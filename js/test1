@@ -1,0 +1,60 @@
+var Parse = require('parse/node').Parse;
+Parse.serverURL = "http://localhost:1337/parse";
+Parse.initialize("my_app_id");
+var KidClass = new Parse.Object.extend("Kid");
+var query = new Parse.Query(KidClass);
+
+query.get("2beqxJ4iXe", {
+... success: function(kid) {
+..... console.log(kid.get("name"));
+..... },
+... error: function(object, error) {
+..... console.log(error);
+..... }
+... });
+
+query.get("2beqxJ4iXe", {
+	success: function(kid) {
+		console.log(kid.get("name"));
+		var frnds = kid.get("friends");
+		frnds.fetch({
+			success: function(friend){
+				var nameOfFriend = friend.get("name");
+				console.log("Name of the friend in relation is: ");
+				console.log(nameOfFriend);
+			},
+			error: function(object, error){
+				console.log("Failed to get friend name");
+				console.log(error);
+			}
+
+		});
+	},
+	error: function(object,error){
+		console.log(error);
+	}
+});
+
+
+> query.get("2beqxJ4iXe", {success: function(kid){ console.log(kid.get("name")); var frnds = kid.get("friends"); frnds.fetch({ success: function(fr){console.log(fr);} });  }, error:function(object,error){console.log("error"); } });
+
+
+> query.get("2beqxJ4iXe", {
+... success: function(kid) {
+..... console.log(kid.get("name"));
+..... var frnds = kid.get("friends"));
+...   frnds.fetch({
+..... success: function(friend){
+....... var nameOfFriend = friend.get("name");
+....... console.log("Name of the friend in relation is: ");
+....... console.log(nameOfFriend);
+....... }
+..... });
+... },
+... error: function(friend,error){
+..... console.log("Error");
+..... }
+... });
+
+	
+

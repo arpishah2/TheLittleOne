@@ -1,0 +1,225 @@
+--> join relations
+--> example in javacscript sdk
+--> show you the classes js i have wrote, how to organise, how to call
+
+
+Arjun = 2beqxJ4iXe
+Kanav = HD0eAH5C3N
+{"opponents":{"__op":"AddRelation","objects":[{"__type":"Pointer","className":"Player","objectId":"Vx4nudeWn"}]}}
+
+
+-------------------------------------------------------
+
+### Kid
+
+http://localhost:1337/parse/classes/Kid
+GET
+X-Parse-Application-Id: my_app_id
+content-type: application/json
+
+-------------------------------------------------------
+
+### Parent
+
+http://localhost:1337/parse/classes/Parent
+GET
+X-Parse-Application-Id: my_app_id
+content-type: application/json
+
+
+-------------------------------------------------------
+
+### Add a relation 
+(Friendship in Arjun):- Add Kanav as friend
+
+Arjun = 2beqxJ4iXe
+Kanav = HD0eAH5C3N
+
+PUT
+X-Parse-Application-Id: my_app_id
+content-type: application/json
+
+{"friends":{"__op":"AddRelation","objects":[{"__type":"Pointer","className":"Kid","objectId":"HD0eAH5C3N"}]}}
+http://localhost:1337/parse/classes/Kid/2beqxJ4iXe
+
+
+Note: Added another relation just to make sure -->
+-----
+
+PUT
+http://localhost:1337/parse/classes/Kid/2beqxJ4iXe
+X-Parse-Application-Id: my_app_id
+content-type: application/json
+-d '{"friendship":{"objects":[{"__type":"Pointer","className":"Kid","objectId":"HD0eAH5C3N"}]}}' 
+
+---------
+curl -X POST \
+  -H "X-Parse-Application-Id: my_app_id" \
+  -H "Content-Type: application/json" \
+  -d '{"friendRelation":{"__op":"AddRelation","objects":[{"__type":"Pointer","className":"Kid","objectId":"HD0eAH5C3N"}]}}' \
+  http://localhost:1337/parse/classes/Kid/2beqxJ4iXe
+
+--> Cannot POST /parse/classes/Kid/2beqxJ4iXe
+---------
+
+curl -X POST -H "X-Parse-Application-Id: my_app_id" -H "Content-Type: application/json" 
+-d '{"friendRelation":{"__op":"AddRelation","objects":[{"__type":"Pointer","className":"Kid","objectId":"HD0eAH5C3N"}]}}' 
+http://localhost:1337/parse/classes/Kid
+
+{"objectId":"lzJ7nUuFGs","createdAt":"2016-07-07T00:43:08.503Z"}
+
+--> Adds a new object with object id, and adds this realtion to every object in the Kid class
+
+
+
+
+
+-------------------------------------------------------
+
+## Print the object having relatiion and also print the relation
+--data-urlencode 'where={"$relatedTo":{"object":{"__type":"Pointer","className":"_Kid","objectId":"2beqxJ4iXe"},"key":"friends"}}'
+
+
+
+
+X-Parse-Application-Id: my_app_id
+content-type: application/json
+-G: --data-urlencode 'where={"friends":{"__type":"Pointer","objectId":"2beqxJ4iXe","className":"_Kid"}}'
+
+
+http://localhost:1337/parse/classes/Kid
+X-Parse-Application-Id: my_app_id
+content-type: application/json
+-G: --data-urlencode 'where={"$relatedTo":{"object":{"__type":"Pointer","className":"_Kid","objectId":"HD0eAH5C3N"},"key":"friends"}}'
+
+
+
+------------------------
+curl -X GET \
+  -H "X-Parse-Application-Id: my_app_id" \
+  -G \
+  --data-urlencode 'include=friends' \
+   http://localhost:1337/parse/classes/Kid/2beqxJ4iXe
+
+x-parse-application-id: my_app_id
+ content-type: application/json
+ 
+{"code":102,"error":"can only include pointer fields"}
+-------------------------
+
+
+-------------------------------------------------------Some link online--------------------------------------------------------------------
+
+I have an "Answer" class that has a relation with "Question" class. When I use something like
+
+curl -X POST \
+  -H "X-Parse-Application-Id: @@@" \
+  -H "X-Parse-REST-API-Key: @@@" \
+  -H "Content-Type: application/json" \
+  -d '{"question_id":{"__op":"AddRelation","objects":[{"__type":"Pointer","className":"Question","objectId":"Xf2K46FvYW"}]},"answer":1}' \
+  https://api.parse.com/1/classes/Answer
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+Relational Query (Search friend = Arjun)
+--------------------------------------
+-------------------------------------
+
+curl -X GET \
+  -H "X-Parse-Application-Id: my_app_id" \
+  -G \
+  --data-urlencode 'where={"friends":{"__type":"Pointer","className":"Kid","objectId":"2beqxJ4iXe"}}' \
+  http://localhost:1337/parse/classes/Kid
+
+{"results":[]}
+
+
+
+//Search friend = Kanav
+
+curl -X GET \
+  -H "X-Parse-Application-Id: my_app_id" \
+  -G \
+  --data-urlencode 'where={"friends":{"__type":"Pointer","className":"Kid","objectId":"HD0eAH5C3N"}}' \
+  http://localhost:1337/parse/classes/Kid
+ 
+{"results":
+      [{"objectId":"2beqxJ4iXe",
+	"name":"Arjun",
+	"createdAt":"2016-07-05T21:21:01.555Z",
+	"updatedAt":"2016-07-06T22:51:38.309Z",
+	"friends":{"__type":"Relation","className":"Kid"},
+	"friendRelation":{"__type":"Relation","className":"Kid"}
+       },
+       {"objectId":"HD0eAH5C3N","name":"Kanav","createdAt":"2016-07-05T21:21:01.621Z",
+	"updatedAt":"2016-07-06T22:52:23.755Z",
+        "friends":{"__type":"Relation","className":"Kid"},
+        "friendRelation":{"__type":"Relation","className":"Kid"}
+       }
+     ]
+}
+
+
+{"results":
+	[{"objectId":"2beqxJ4iXe",
+	  "name":"Arjun","createdAt":"2016-07-05T21:21:01.555Z","updatedAt":"2016-07-06T22:51:38.309Z",
+          "friends":{"__type":"Relation","className":"Kid"},
+          "friendRelation":{"__type":"Relation","className":"Kid"}
+         },
+         {"objectId":"HD0eAH5C3N","name":"Kanav","createdAt":"2016-07-05T21:21:01.621Z","updatedAt":"2016-07-06T22:52:23.755Z",
+          "friends":{"__type":"Relation","className":"Kid"},
+          "friendRelation":{"__type":"Relation","className":"Kid"}
+         }
+        ]
+}
+
+
+------------------------------------------------------------- 
+
+curl -X GET \
+  -H "X-Parse-Application-Id: my_app_id" \
+  -G \
+  --data-urlencode 'where={"friendRelation":{"__type":"Pointer","className":"Kid","objectId":"HD0eAH5C3N"}}' \
+  http://localhost:1337/parse/classes/Kid
+
+{"results":
+	[{"objectId":"lzJ7nUuFGs",
+	  "createdAt":"2016-07-07T00:43:08.503Z",
+          "updatedAt":"2016-07-07T00:43:08.503Z",
+          "friends":{"__type":"Relation","className":"Kid"},
+          "friendRelation":{"__type":"Relation","className":"Kid"}
+         }
+        ]
+}
+
+--------------------------------------------------------------
+
+//query Kid whose friend is Arjun
+
+
+curl -X GET \
+  -H "X-Parse-Application-Id: my_app_id" \
+  -G \
+  --data-urlencode 'where={"friends":{"__type":"Pointer","className":"Kid","objectId":"2beqxJ4iXe"}}' \
+  http://localhost:1337/parse/classes/Kid
+
+{"results":[]}
+
+----------------------------------------------------------------
+curl -X GET \
+  -H "X-Parse-Application-Id: my_app_id" \
+  -G \
+  --data-urlencode 'where={"friends":{"__type":"Pointer","className":"Kid","objectId":"2beqxJ4iXe"}}' \
+  http://localhost:1337/parse/classes/Kid/HD0eAH5C3N
+
+{"error":"unauthorized"}{"error":"unauthorized"}
+
+
+-----------------------
+
+Arjun = 2beqxJ4iXe
+Kanav = HD0eAH5C3N
