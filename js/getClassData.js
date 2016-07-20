@@ -5,7 +5,7 @@ Parse.initialize("my_app_id");
 var Kid = Parse.Object.extend("Kid");
 var Parent = Parse.Object.extend("Parent");
 
-var queryObject = new Parse.Query("Kid");
+var queryObject = new Parse.Query("Parent");
 
 
 //to get all the objects belonging to one class
@@ -23,7 +23,7 @@ queryObject.find({
  
 	    //console.log("Object: --> \n"+obj);
 
-	    //get all the properties and value of the object
+	    //get and print all the properties and value of the object
 	    for(var key in obj){
 		if(obj.hasOwnProperty(key)){
 			console.log(key + " -> " + obj[key]);
@@ -47,6 +47,9 @@ queryObject.find({
 	    	});
 	     }
        }
+
+       console.log("\n \n");
+
     },
     error: function (error) {
         alert("Error: " + error.code + " " + error.message);
